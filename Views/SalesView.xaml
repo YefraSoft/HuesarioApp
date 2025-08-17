@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HuesarioApp.Views.SalesView"
+             Title="SalesView">
+    <ScrollView>
+        <FlexLayout Direction="Column"
+                    AlignContent="Center"
+                    MaximumWidthRequest="900"
+                    JustifyContent="SpaceBetween"
+                    Margin="10">
+            <Image Source="{Binding Image}"
+                   BackgroundColor="Orange"
+                   MaximumWidthRequest="300"
+                   MaximumHeightRequest="300"
+                   Aspect="AspectFill">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding TakePictureCom}" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Button Text="&#xf030;"
+                    Command="{Binding TakePictureCom}"
+                    FontFamily="Awesome"
+                    MaximumWidthRequest="300"
+                    MinimumHeightRequest="200"
+                    MaximumHeightRequest="300"
+                    TextColor="Black"
+                    BackgroundColor="Orange"
+                    FontSize="Large" />
+            
+            <Entry Placeholder="Seleccione la pieza" />
+            <Label Text="Marca" />
+            <Picker />
+            <Label Text="Modelo" />
+            <Picker />
+            <Label Text="Caracteristica" />
+            <Picker />
+            <Label Text="Lado" />
+            <Picker />
+            <Entry Placeholder="Pieza"
+                   ClearButtonVisibility="WhileEditing"
+                   IsSpellCheckEnabled="True"
+                   ReturnType="Next" />
+            <Entry Placeholder="Precio"
+                   Keyboard="Numeric"
+                   MaxLength="10"
+                   ClearButtonVisibility="WhileEditing"
+                   ReturnType="Next" />
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Tiene garantía?"
+                       VerticalOptions="Center"
+                       FontSize="16" />
+                <Switch OnColor="FloralWhite"
+                        ThumbColor="DarkOrange"
+                        IsToggled="False"
+                        VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <DatePicker IsVisible="False" />
+            <Button Text="Guardar"
+                    Background="DarkOrange" />
+        </FlexLayout>
+    </ScrollView>
+</ContentPage>
