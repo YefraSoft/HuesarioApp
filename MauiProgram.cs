@@ -1,8 +1,7 @@
 ﻿using HuesarioApp.ViewModels.SalesView;
-using HuesarioApp.Views;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
+using HuesarioApp.Interfaces;
+using HuesarioApp.Services;
 
 namespace HuesarioApp
 {
@@ -20,8 +19,8 @@ namespace HuesarioApp
                     fonts.AddFont("AwesomeRegular.otf","Awesome");
                 });
 
-            builder.Services.AddSingleton<SalesViewModel>();
-            builder.Services.AddSingleton<SalesView>();
+            builder.Services.AddTransient<SalesViewModel>();
+            builder.Services.AddSingleton<ICameraServices, CameraService>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

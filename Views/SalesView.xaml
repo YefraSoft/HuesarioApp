@@ -3,6 +3,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HuesarioApp.Views.SalesView"
+             xmlns:vm="clr-namespace:HuesarioApp.ViewModels.SalesView"
+             x:DataType="vm:SalesViewModel"
              Title="SalesView">
     <ScrollView>
         <FlexLayout Direction="Column"
@@ -10,26 +12,19 @@
                     MaximumWidthRequest="900"
                     JustifyContent="SpaceBetween"
                     Margin="10">
-            <Image Source="{Binding Image}"
-                   BackgroundColor="Orange"
-                   MaximumWidthRequest="300"
-                   MaximumHeightRequest="300"
-                   Aspect="AspectFill">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding TakePictureCom}" />
-                </Image.GestureRecognizers>
-            </Image>
-            <Button Text="&#xf030;"
-                    Command="{Binding TakePictureCom}"
-                    FontFamily="Awesome"
-                    MaximumWidthRequest="300"
-                    MinimumHeightRequest="200"
-                    MaximumHeightRequest="300"
-                    TextColor="Black"
-                    BackgroundColor="Orange"
-                    FontSize="Large" />
-            
-            <Entry Placeholder="Seleccione la pieza" />
+
+            <Border BackgroundColor="Orange" StrokeShape="RoundRectangle 15" MaximumWidthRequest="300"
+                    MaximumHeightRequest="300" MinimumHeightRequest="200" StrokeThickness="2" Stroke="DarkOrange"
+                    Margin="0,0,0,0">
+                <Image Source="{Binding Image}"
+                       Aspect="AspectFill">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TakePictureCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Border>
+
+            <Entry Placeholder="Seleccione la pieza"  Margin="0,10,0,0"/>
             <Label Text="Marca" />
             <Picker />
             <Label Text="Modelo" />

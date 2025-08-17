@@ -4,9 +4,9 @@ namespace HuesarioApp.Views;
 
 public partial class SalesView : ContentPage
 {
-    public SalesView(SalesViewModel VM)
+    public SalesView(SalesViewModel vm)
     {
         InitializeComponent();
-        BindingContext = VM;
+        BindingContext = vm;
     }
 }

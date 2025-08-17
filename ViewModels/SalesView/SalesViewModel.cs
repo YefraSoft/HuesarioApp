@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using HuesarioApp.Interfaces;
+using HuesarioApp.ViewModels.SalesView.Commands;
 
 namespace HuesarioApp.ViewModels.SalesView
 {
@@ -8,55 +10,30 @@ namespace HuesarioApp.ViewModels.SalesView
     {
 
         private ImageSource? _image;
-        public ICommand TakePictureCom { get; }
-        public event PropertyChangedEventHandler? PropertyChanged;
-
+        public ICommand TakePictureCommand { get; }
         public ImageSource? Image
         {
             get => _image;
             set
             {
-                if (_image != value)
-                {
-                    _image = value;
-                    OnPropertyChanged();
-                }
+                if (_image == value) return;
+                _image = value;
+                OnPropertyChanged();
             }
         }
-
-        public SalesViewModel()
+        public SalesViewModel(ICameraServices  cameraServices)
         {
-            TakePictureCom = new Command(
-                execute: async () =>
+            Image = ImageSource.FromFile("cam_ico.png");
+            TakePictureCommand = new TakePictureCommand(cameraServices, (photo)=>
                 {
-                    try
-                    {
-                        if (MediaPicker.Default.IsCaptureSupported)
-                        {
-                            var status = await Permissions.CheckStatusAsync<Permissions.Camera>();
-                            if (status != PermissionStatus.Granted)
-                            {
-                                status = await Permissions.RequestAsync<Permissions.Camera>();
-                            }
-
-                            FileResult? photo = await MediaPicker.Default.CapturePhotoAsync();
-                            if (photo != null)
-                            {
-                                string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
-                                var sourceStream = await photo.OpenReadAsync();
-                                Image = ImageSource.FromStream(() => sourceStream);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error al tomar foto: {ex.Message}");
-                    }
+                    Image = photo;
                 }
                 );
         }
-
-        protected void OnPropertyChanged([CallerMemberName] string? property = null)
+        
+        // INotifyPropertyChanged Logic
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string? property = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
