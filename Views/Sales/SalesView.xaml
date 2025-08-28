@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HuesarioApp.Views.Sales.SalesView"
+             xmlns:vm="clr-namespace:HuesarioApp.ViewModels.SalesView"
+             x:DataType="vm:SalesViewModel"
+             x:Name="Page"
+             Title="SalesView">
+    <ScrollView>
+        <FlexLayout Direction="Column"
+                    AlignContent="Center"
+                    MaximumWidthRequest="900"
+                    JustifyContent="SpaceBetween"
+                    Margin="10">
+
+
+            <CollectionView ItemsSource="{Binding Images}" FlowDirection="LeftToRight" ItemsLayout="HorizontalList"
+                            x:Name="CollectionView">
+                <CollectionView.EmptyView>
+                    <Border BackgroundColor="Orange" StrokeShape="RoundRectangle 15" MaximumWidthRequest="300"
+                            MaximumHeightRequest="300" MinimumHeightRequest="200" StrokeThickness="2"
+                            Stroke="DarkOrange"
+                            Margin="0,0,0,0">
+                        <Image Source="cam_ico.png"
+                               Aspect="AspectFill">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding BindingContext.TakePictureCommand, Source={x:Reference Page}}" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Border>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type x:String}">
+                        <Border BackgroundColor="Orange" StrokeShape="RoundRectangle 15"
+                                MaximumWidthRequest="300" MaximumHeightRequest="300" MinimumHeightRequest="200"
+                                StrokeThickness="2" Stroke="DarkOrange" Margin="0">
+                            <Image Source="{Binding }" Aspect="AspectFill" x:Name="ImageCo">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding BindingContext.TakePictureCommand, Source={x:Reference Page}}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Border>
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!--
+            <ScrollView Orientation="Horizontal" WidthRequest="600">
+                <FlexLayout Direction="Row"
+                            BindableLayout.ItemsSource="{Binding Images }"
+                            Wrap="NoWrap" JustifyContent="Start" AlignItems="Start"
+                            Margin="10,0,10,0">
+                    
+                    <BindableLayout.EmptyView>
+                        <Border BackgroundColor="Orange" StrokeShape="RoundRectangle 15" MaximumWidthRequest="300"
+                                MaximumHeightRequest="300" MinimumHeightRequest="200" StrokeThickness="2"
+                                Stroke="DarkOrange"
+                                Margin="0,0,0,0">
+                            <Image Source="cam_i.png"
+                                   Aspect="AspectFill">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TakePictureCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Border>
+                    </BindableLayout.EmptyView>
+                </FlexLayout>
+            </ScrollView>
+    -->
+
+            <Entry Placeholder="Seleccione la pieza" Margin="0,10,0,0" />
+            <Label Text="Marca" />
+            <Picker />
+            <Label Text="Modelo" />
+            <Picker />
+            <Label Text="Caracteristica" />
+            <Picker />
+            <Label Text="Lado" />
+            <Picker />
+            <Entry Placeholder="Pieza"
+                   ClearButtonVisibility="WhileEditing"
+                   IsSpellCheckEnabled="True"
+                   ReturnType="Next" />
+            <Entry Placeholder="Precio"
+                   Keyboard="Numeric"
+                   MaxLength="10"
+                   ClearButtonVisibility="WhileEditing"
+                   ReturnType="Next" />
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Tiene garantía?"
+                       VerticalOptions="Center"
+                       FontSize="16" />
+                <Switch OnColor="FloralWhite"
+                        ThumbColor="DarkOrange"
+                        IsToggled="False"
+                        VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <DatePicker IsVisible="False" />
+            <Button Text="Guardar"
+                    Background="DarkOrange" />
+        </FlexLayout>
+    </ScrollView>
+</ContentPage>

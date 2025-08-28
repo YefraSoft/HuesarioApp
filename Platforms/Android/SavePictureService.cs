@@ -45,15 +45,11 @@ public static class SavePictureService
             if (picturesDir != null)
             {
                 var targetDir = System.IO.Path.Combine(picturesDir, "Sales");
-
-                // Asegúrate de que el directorio exista
                 if (!Directory.Exists(targetDir))
                     Directory.CreateDirectory(targetDir);
 
                 var filePath = System.IO.Path.Combine(targetDir, imageName);
                 System.IO.File.WriteAllBytes(filePath, arr);
-
-                // Notifica al sistema que hay una nueva imagen
                 var mediaScanIntent = new Android.Content.Intent(ActionMediaScannerScanFile);
                 mediaScanIntent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(filePath)));
                 MainActivity.Instance?.SendBroadcast(mediaScanIntent);

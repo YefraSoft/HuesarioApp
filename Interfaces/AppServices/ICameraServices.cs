@@ -1,4 +1,4 @@
-﻿namespace HuesarioApp.Interfaces;
+﻿namespace HuesarioApp.Interfaces.AppServices;
 
 public interface ICameraServices
 {

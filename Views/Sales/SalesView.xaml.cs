@@ -1,6 +1,6 @@
 using HuesarioApp.ViewModels.SalesView;
 
-namespace HuesarioApp.Views;
+namespace HuesarioApp.Views.Sales;
 
 public partial class SalesView : ContentPage
 {

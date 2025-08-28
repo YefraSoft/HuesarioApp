@@ -1,38 +1,41 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using HuesarioApp.Interfaces;
+using HuesarioApp.Interfaces.AppServices;
 using HuesarioApp.ViewModels.SalesView.Commands;
 
 namespace HuesarioApp.ViewModels.SalesView
 {
     public class SalesViewModel : INotifyPropertyChanged
     {
+        private ObservableCollection<ImageSource?> _images;
 
-        private ImageSource? _image;
-        public ICommand TakePictureCommand { get; }
-        public ImageSource? Image
+        public ObservableCollection<ImageSource?> Images
         {
-            get => _image;
+            get => _images;
             set
             {
-                if (_image == value) return;
-                _image = value;
-                OnPropertyChanged();
+                _images = value;
+                OnPropertyChanged(nameof(_images));
             }
         }
-        public SalesViewModel(ICameraServices  cameraServices)
+
+        public ICommand TakePictureCommand { get; }
+
+        public SalesViewModel(ICameraServices cameraServices)
         {
-            Image = ImageSource.FromFile("cam_ico.png");
-            TakePictureCommand = new TakePictureCommand(cameraServices, (photo)=>
+            _images = [];
+            TakePictureCommand = new TakePictureCommand(cameraServices, (photo) =>
                 {
-                    Image = photo;
+                    if (photo != null) Images.Add(photo);
                 }
-                );
+            );
         }
-        
+
         // INotifyPropertyChanged Logic
         public event PropertyChangedEventHandler? PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string? property = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));

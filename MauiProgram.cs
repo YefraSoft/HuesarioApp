@@ -1,7 +1,8 @@
 ﻿using HuesarioApp.ViewModels.SalesView;
 using Microsoft.Extensions.Logging;
-using HuesarioApp.Interfaces;
-using HuesarioApp.Services;
+using HuesarioApp.Interfaces.AppServices;
+using HuesarioApp.Models.DataServices;
+using HuesarioApp.ViewModels.AppServices;
 
 namespace HuesarioApp
 {
@@ -18,7 +19,8 @@ namespace HuesarioApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("AwesomeRegular.otf","Awesome");
                 });
-
+            
+            Task.Run(async () => await new LocalDbConfig().MakeTables()).Wait();
             builder.Services.AddTransient<SalesViewModel>();
             builder.Services.AddSingleton<ICameraServices, CameraService>();
 #if DEBUG
