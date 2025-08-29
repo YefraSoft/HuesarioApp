@@ -5,6 +5,12 @@ namespace HuesarioApp.Models.Entities;
 [Table("sales")]
 public class Sales
 {
+
+    public Sales()
+    {
+        CreatedAt = DateTime.Now;
+    }
+
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
@@ -13,9 +19,9 @@ public class Sales
 
     [Column("custom_part_name")]
     public string CustomPartName { get; set; }
-    
-    [Column("name_image")]
-    public string NameImage { get; set; }
+
+    [Column("image_url")]
+    public string ImageUrl { get; set; }
 
     [Column("quantity")]
     public int Quantity { get; set; }

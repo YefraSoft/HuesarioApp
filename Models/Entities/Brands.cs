@@ -5,6 +5,11 @@ namespace HuesarioApp.Models.Entities;
 [Table("Brands")]
 public class Brands
 {
+    public Brands()
+    {
+        CreatedAt = DateTime.Now;
+    }
+    
     [PrimaryKey, AutoIncrement] 
     public int Id { get; set; }
 

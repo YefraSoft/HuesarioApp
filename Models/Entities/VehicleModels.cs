@@ -3,8 +3,14 @@
 namespace HuesarioApp.Models.Entities;
 
 [Table("models")]
-public class Models
+public class VehicleModels
 {
+
+    public VehicleModels()
+    {
+        CreatedAt =  DateTime.Now;
+    }
+    
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
@@ -12,7 +18,7 @@ public class Models
     public string Name { get; set; }
 
     [Column("year")]
-    public string Year { get; set; }
+    public int Year { get; set; }
 
     [Column("brand_id")]
     public int BrandId { get; set; }
@@ -24,5 +30,5 @@ public class Models
     public string Engine { get; set; }
 
     [Column("transmission")]
-    public string Transmission { get; set; } // Puedes validar que sea AUTOMATIC o STANDARD manualmente
+    public string Transmission { get; set; }
 }

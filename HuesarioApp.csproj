@@ -76,6 +76,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Models\Contracts\" />
+	  <Folder Include="Services\DataServices\" />
 	</ItemGroup>
 
 	<ItemGroup>

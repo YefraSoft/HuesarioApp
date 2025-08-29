@@ -1,6 +1,6 @@
 ﻿using HuesarioApp.Interfaces.AppServices;
 
-namespace HuesarioApp.ViewModels.AppServices;
+namespace HuesarioApp.Services.AppServices;
 
 public class CameraService : ICameraServices
 {
