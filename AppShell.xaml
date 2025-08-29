@@ -3,8 +3,8 @@
     x:Class="HuesarioApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:HuesarioApp.Views"
     xmlns:sales="clr-namespace:HuesarioApp.Views.Sales"
+    xmlns:inventory="clr-namespace:HuesarioApp.Views.Inventory"
     Shell.FlyoutBehavior="Flyout"
     Title="HuesarioApp">
 
@@ -12,5 +12,10 @@
         Title="Home"
         ContentTemplate="{DataTemplate sales:SalesView}"
         Route="MainPage" />
+    <ShellContent
+        Title="Inventario"
+        ContentTemplate="{DataTemplate inventory:ModelsInventory}"
+        Route="ModelsInventory"
+        />
 
 </Shell>

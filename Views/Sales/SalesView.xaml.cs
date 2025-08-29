@@ -1,4 +1,4 @@
-using HuesarioApp.ViewModels.SalesView;
+using HuesarioApp.ViewModels.Sales;
 
 namespace HuesarioApp.Views.Sales;
 

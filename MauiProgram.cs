@@ -1,11 +1,12 @@
-﻿using HuesarioApp.ViewModels.SalesView;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using HuesarioApp.Interfaces.AppServices;
 using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.DataSources;
 using HuesarioApp.Models.Entities;
 using HuesarioApp.Services.AppServices;
 using HuesarioApp.Services.Validators;
+using HuesarioApp.ViewModels.Inventory;
+using HuesarioApp.ViewModels.Sales;
 
 namespace HuesarioApp
 {
@@ -24,7 +25,10 @@ namespace HuesarioApp
                 });
             
             Task.Run(async () => await new LocalDbConfig().MakeTables()).Wait();
+            // ViewModels
             builder.Services.AddTransient<SalesViewModel>();
+            builder.Services.AddTransient<ModelsInventoryVm>();
+            //
             builder.Services.AddSingleton<ICameraServices, CameraService>();
             builder.Services.AddSingleton<IValidator, PrimitivesValidator>();
             builder.Services.AddSingleton<IEntityValidator<Brands>, BrandsValidator>();

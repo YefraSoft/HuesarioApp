@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using HuesarioApp.Interfaces.AppServices;
-using HuesarioApp.ViewModels.SalesView.Commands;
+using HuesarioApp.ViewModels.Sales.Commands;
 
-namespace HuesarioApp.ViewModels.SalesView
+namespace HuesarioApp.ViewModels.Sales
 {
     public class SalesViewModel : INotifyPropertyChanged
     {

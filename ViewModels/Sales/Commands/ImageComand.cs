@@ -1,8 +1,7 @@
 ﻿using System.Windows.Input;
-using HuesarioApp.Interfaces;
 using HuesarioApp.Interfaces.AppServices;
 
-namespace HuesarioApp.ViewModels.SalesView.Commands;
+namespace HuesarioApp.ViewModels.Sales.Commands;
 
 public class TakePictureCommand(ICameraServices cameraServices, Action<ImageSource?> execute)
     : ICommand

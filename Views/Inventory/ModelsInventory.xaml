@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HuesarioApp.ViewModels.Inventory"
+             x:DataType="vm:ModelsInventoryVm"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             x:Class="HuesarioApp.Views.Inventory.ModelsInventory">
+    <!--
+    <ContentPage.Resources>
+         Colores y estilos base 
+        <Style TargetType="Entry">
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="BackgroundColor" Value="#FFF5E5" />
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="PlaceholderColor" Value="Gray" />
+        </Style>
+        <Style TargetType="Picker">
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="BackgroundColor" Value="#FFF5E5" />
+            <Setter Property="Margin" Value="10,5" />
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="BackgroundColor" Value="#FFF5E5" />
+            <Setter Property="Margin" Value="10,5" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="Orange" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Margin" Value="10,5,10,0" />
+        </Style>
+    </ContentPage.Resources>
+-->
+    <ScrollView>
+        <FlexLayout Direction="Column"
+                    AlignContent="Center"
+                    MaximumWidthRequest="900"
+                    JustifyContent="SpaceBetween"
+                    Margin="10">
+
+            <Label Text="Nombre del Vehículo" />
+            <Entry Placeholder="Ej. Corolla" Text="{Binding Model.Name}" />
+
+            <Label Text="Año del Modelo" />
+            <DatePicker Date="{Binding Model.Year}"
+                        MaximumDate="{x:Static sys:DateTime.Now}"
+                        Format="yyyy"
+                        HorizontalOptions="Fill" />
+
+            <Label Text="Marca" />
+            <Picker Title="Selecciona una marca"
+                    ItemsSource="{Binding BrandList}"
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding Model.BrandId}"/>
+
+            <Label Text="Tipo de Motor" />
+            <Entry Placeholder="Ej. 1.8L VVT-i" Text="{Binding Model.Engine}" />
+
+            <Label Text="Transmisión" />
+            <Picker Title="Selecciona transmisión"
+                    ItemsSource="{Binding TransmissionList}"
+                    SelectedItem="{Binding Model.Transmission}" />
+
+            <Button Text="Guardar"
+                    Margin="10,20"
+                    BackgroundColor="Orange"
+                    TextColor="White"
+                    Command="{Binding SaveCommand}" />
+
+            <Label Text="Modelos Existentes" FontSize="18" Margin="10,30,10,10" />
+
+            <CollectionView ItemsSource="{Binding ExistingModels}"
+                            Margin="10,0,10,20"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="#FFF5E5" StrokeShape="RoundRectangle 8" Padding="10" Margin="0,5">
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="Black" />
+                                <Label Text="{Binding Year}" TextColor="Gray" FontSize="12" />
+                                <Label Text="{Binding Engine}" TextColor="Black" FontSize="12" />
+                                <Label Text="{Binding Transmission}" TextColor="Black" FontSize="12" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </FlexLayout>
+    </ScrollView>
+</ContentPage>
