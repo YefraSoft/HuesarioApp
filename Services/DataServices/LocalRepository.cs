@@ -5,7 +5,7 @@ namespace HuesarioApp.Services.DataServices;
 
 public class LocalRepository<T, TY> : IRepository<T, TY> where T : class, new()
 {
-    private readonly SQLiteAsyncConnection _db = new SQLiteAsyncConnection(Settings.GlobalVariables.DbPath);
+    private readonly SQLiteAsyncConnection _db = new (Settings.GlobalVariables.DbPath);
 
     public async Task<IEnumerable<T>> GetAll()
     {

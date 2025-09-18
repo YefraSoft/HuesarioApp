@@ -2,14 +2,86 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.Entities;
 using HuesarioApp.Models.Enums;
 
 namespace HuesarioApp.ViewModels.Inventory;
 
-public class ModelsInventoryVm : INotifyPropertyChanged
+public sealed class ModelsInventoryVm : INotifyPropertyChanged
 {
-    private VehicleModels _model = new VehicleModels();
+    public ModelsInventoryVm(IRepository<VehicleModels, int> modelsRepo, IRepository<Brands, int> brandRepo,
+        IEntityValidator<VehicleModels> validator)
+    {
+        _modelsRepo = modelsRepo;
+        _brandRepo = brandRepo;
+        _validator = validator;
+        _ = LoadData();
+        SaveCommand = new Command(async void () =>
+        {
+            try
+            {
+                await Save();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+        });
+    }
+
+    /*
+     * DEPENDENCIES
+     */
+
+    private readonly IRepository<VehicleModels, int> _modelsRepo;
+    private readonly IRepository<Brands, int> _brandRepo;
+    private readonly IEntityValidator<VehicleModels> _validator;
+
+    /*
+     * DATA BINDING
+     */
+
+    public DateTime SelectedYear
+    {
+        get => Model.Year >= 1 ? new DateTime(Model.Year, 1, 1) : DateTime.Now;
+        set
+        {
+            if (Model.Year == value.Year) return;
+            Model.Year = value.Year;
+            OnPropertyChanged();
+        }
+    }
+
+    private Brands _brand = new();
+
+    public Brands Brand
+    {
+        get => _brand;
+        set
+        {
+            if (_brand == value) return;
+            _brand = value;
+            Model.BrandId = value?.Id ?? 100;
+            OnPropertyChanged();
+        }
+    }
+
+
+    private ObservableCollection<VehicleModels> _modelsList = [];
+
+    public ObservableCollection<VehicleModels> ModelsList
+    {
+        get => _modelsList;
+        set
+        {
+            if (_modelsList == value) return;
+            _modelsList = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private VehicleModels _model = new();
 
     public VehicleModels Model
     {
@@ -18,7 +90,7 @@ public class ModelsInventoryVm : INotifyPropertyChanged
         {
             if (_model == value) return;
             _model = value;
-            OnPropertyChanged(nameof(_model));
+            OnPropertyChanged();
         }
     }
 
@@ -31,25 +103,62 @@ public class ModelsInventoryVm : INotifyPropertyChanged
         {
             if (_brandList == value) return;
             _brandList = value;
-            OnPropertyChanged(nameof(_brandList));
+            OnPropertyChanged();
         }
     }
 
     public List<TransmissionType> TransmissionList { get; } =
-        Enum.GetValues<TransmissionType>().Cast<TransmissionType>().ToList();
-    
+        Enum.GetValues<TransmissionType>().ToList();
+
+
+    /*
+     * Commands, Actions Tasks
+     */
     public ICommand SaveCommand { get; }
 
-    public ModelsInventoryVm()
+    private async Task LoadData()
     {
-        SaveCommand = new Command((() => 
-                Shell.Current.DisplayAlert(Model.Name + Model.Year + Model.Engine + Model.CreatedAt + Model.Transmission,"AllGood","OK")));
+        var vehicles = await _modelsRepo.GetAll();
+        var brands = await _brandRepo.GetAll();
+        BrandList = new ObservableCollection<Brands>(brands);
+        ModelsList = new ObservableCollection<VehicleModels>(vehicles);
+    }
+
+    private async Task Save()
+    {
+        if (!_validator.IsValid(Model))
+        {
+            var message = $"Por favor verifica los siguientes campos:\n" +
+                             $"- Nombre: {Model.Name ?? "(vacío)"}\n" +
+                             $"- Año: {Model.Year}\n" +
+                             $"- Motor: {Model.Engine ?? "(vacío)"}\n" +
+                             $"- Marca ID: {Model.BrandId}\n" +
+                             $"- Transmisión: {Model.Transmission}";
+
+            await Shell.Current.DisplayAlert("Error", message, "OK");
+            return;
+        }
+
+        var newModel = new VehicleModels
+        {
+            Name = Model.Name,
+            Year = Model.Year,
+            Engine = Model.Engine,
+            BrandId = Model.BrandId,
+            Transmission = Model.Transmission
+        };
+
+        await _modelsRepo.Create(newModel);
+
+        ModelsList.Add(newModel);
+
+        Model = new VehicleModels();
     }
 
     // INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

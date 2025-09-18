@@ -7,7 +7,9 @@ public partial class PrimitivesValidator : IValidator
 {
     private readonly Regex _stringRegex = StringRegex();
 
-    [GeneratedRegex(@"^([a-zA-Z\s]{1,50}|[1-9]\.[1-9])$")]
+    [GeneratedRegex(@"^([a-zA-Z]+\s\d+|\d+(\.\d{1,2})?\s[a-zA-Z\s]{1,45}|[a-zA-Z\s]{1,50}|\d+|\d+\.\d{1,2})$")]
+
+
     private static partial Regex StringRegex();
 
     public bool IsValidString(string data)
@@ -27,6 +29,6 @@ public partial class PrimitivesValidator : IValidator
 
     public bool IsValidYear(int data)
     {
-        return data >= 2024 && data <= DateTime.Now.Year;
+        return data >= 1900 && data <= DateTime.Now.Year;
     }
 }

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HuesarioApp.ViewModels.Inventory"
+             x:DataType="vm:BranchInventoryVm"
+             xmlns:models="clr-namespace:HuesarioApp.Models.Entities"
+             x:Class="HuesarioApp.Views.Inventory.BranchView.BranchInventoryView">
+    <ScrollView Padding="20,0,20,0">
+        <FlexLayout Direction="Column"
+                    AlignContent="Center"
+                    MaximumWidthRequest="900"
+                    JustifyContent="Start">
+
+            <!-- Entrada de Marca -->
+            <Label Text="Nombre de la Marca" />
+            <Entry Placeholder="Ej. Toyota"
+                   Text="{Binding Brand.Name}" />
+
+            <!-- Botón Guardar -->
+            <Button Text="Guardar"
+                    Margin="10,20"
+                    BackgroundColor="Orange"
+                    TextColor="White"
+                    Command="{Binding SaveCommand}" />
+
+            <!-- Lista de Marcas -->
+            <Label Text="Marcas Registradas" FontSize="18" Margin="10,30,10,10" />
+
+            <CollectionView ItemsSource="{Binding BrandList}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Brands">
+                        <Border BackgroundColor="#FFF5E5"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="10"
+                                Margin="0,5"
+                                Stroke="DarkOrange"
+                                StrokeThickness="1">
+                            <HorizontalStackLayout Spacing="10">
+                                <Label Text="{Binding Name}"
+                                       FontAttributes="Bold"
+                                       TextColor="Black" />
+                                <Label Text="{Binding CreatedAt, StringFormat='{0:dd/MM/yyyy}'}"
+                                       TextColor="Gray"
+                                       FontSize="12" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </FlexLayout>
+    </ScrollView>
+</ContentPage>

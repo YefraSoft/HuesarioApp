@@ -1,21 +1,33 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <Shell
     x:Class="HuesarioApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sales="clr-namespace:HuesarioApp.Views.Sales"
-    xmlns:inventory="clr-namespace:HuesarioApp.Views.Inventory"
-    Shell.FlyoutBehavior="Flyout"
+    xmlns:branch="clr-namespace:HuesarioApp.Views.Inventory.BranchView"
+    xmlns:models="clr-namespace:HuesarioApp.Views.Inventory.ModelsView"
+    FlyoutBehavior="Flyout"
     Title="HuesarioApp">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate sales:SalesView}"
         Route="MainPage" />
-    <ShellContent
-        Title="Inventario"
-        ContentTemplate="{DataTemplate inventory:ModelsInventory}"
-        Route="ModelsInventory"
-        />
+
+    <FlyoutItem Title="Inventory" Icon="inventory_ico.png">
+        <Tab Title="Models" Icon="models_icon.png">
+            <ShellContent
+                Title="Models"
+                ContentTemplate="{DataTemplate models:ModelsInventoryView}"
+                Route="ModelsInventory" />
+        </Tab>
+        <Tab Title="Branches" Icon="vw_icon.png">
+            <ShellContent
+                Title="Branches"
+                ContentTemplate="{DataTemplate branch:BranchInventoryView}"
+                Route="ModelsInventory" />
+        </Tab>
+    </FlyoutItem>
 
 </Shell>

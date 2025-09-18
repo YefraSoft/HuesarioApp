@@ -32,14 +32,14 @@
                     </Border>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type x:String}">
+                    <DataTemplate x:DataType="ImageSource">
                         <Border BackgroundColor="Orange" StrokeShape="RoundRectangle 15"
                                 MaximumWidthRequest="300" MaximumHeightRequest="300" MinimumHeightRequest="200"
                                 StrokeThickness="2" Stroke="DarkOrange" Margin="0">
                             <Image Source="{Binding }" Aspect="AspectFill" x:Name="ImageCo">
                                 <Image.GestureRecognizers>
                                     <TapGestureRecognizer
-                                        Command="{Binding BindingContext.TakePictureCommand, Source={x:Reference Page}}" />
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.TakePictureCommand}" />
                                 </Image.GestureRecognizers>
                             </Image>
                         </Border>

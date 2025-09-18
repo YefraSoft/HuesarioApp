@@ -4,6 +4,7 @@ using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.DataSources;
 using HuesarioApp.Models.Entities;
 using HuesarioApp.Services.AppServices;
+using HuesarioApp.Services.DataServices;
 using HuesarioApp.Services.Validators;
 using HuesarioApp.ViewModels.Inventory;
 using HuesarioApp.ViewModels.Sales;
@@ -21,13 +22,16 @@ namespace HuesarioApp
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("AwesomeRegular.otf","Awesome");
+                    fonts.AddFont("AwesomeRegular.otf", "Awesome");
                 });
-            
+
             Task.Run(async () => await new LocalDbConfig().MakeTables()).Wait();
             // ViewModels
             builder.Services.AddTransient<SalesViewModel>();
             builder.Services.AddTransient<ModelsInventoryVm>();
+            builder.Services.AddTransient<BranchInventoryVm>();
+            builder.Services.AddTransient<IRepository<VehicleModels, int>, LocalRepository<VehicleModels, int>>();
+            builder.Services.AddTransient<IRepository<Brands, int>, LocalRepository<Brands, int>>();
             //
             builder.Services.AddSingleton<ICameraServices, CameraService>();
             builder.Services.AddSingleton<IValidator, PrimitivesValidator>();
