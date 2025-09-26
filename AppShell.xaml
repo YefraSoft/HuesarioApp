@@ -6,6 +6,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:sales="clr-namespace:HuesarioApp.Views.Sales"
     xmlns:branch="clr-namespace:HuesarioApp.Views.Inventory.BranchView"
+    xmlns:parts="clr-namespace:HuesarioApp.Views.Inventory.Parts"
     xmlns:models="clr-namespace:HuesarioApp.Views.Inventory.ModelsView"
     FlyoutBehavior="Flyout"
     Title="HuesarioApp">
@@ -27,6 +28,12 @@
                 Title="Branches"
                 ContentTemplate="{DataTemplate branch:BranchInventoryView}"
                 Route="ModelsInventory" />
+        </Tab>
+        <Tab Title="Parts" Icon="inventory_ico.png">
+            <ShellContent
+                Title="Parts"
+                ContentTemplate="{DataTemplate parts:PartsInventoryView}"
+                Route="PartsInventory" />
         </Tab>
     </FlyoutItem>
 

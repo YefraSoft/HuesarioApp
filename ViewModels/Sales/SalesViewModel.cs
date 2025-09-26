@@ -9,6 +9,25 @@ namespace HuesarioApp.ViewModels.Sales
 {
     public class SalesViewModel : INotifyPropertyChanged
     {
+        public SalesViewModel(ICameraServices cameraServices)
+        {
+            _images = [];
+            TakePictureCommand = new TakePictureCommand(cameraServices, (photo) =>
+                {
+                    if (photo != null) Images.Add(photo);
+                }
+            );
+        }
+
+        /*
+         * DEPENDENCIES
+         */
+
+
+        /*
+         * DATA BINDING
+         */
+
         private ObservableCollection<ImageSource?> _images;
 
         public ObservableCollection<ImageSource?> Images
@@ -21,19 +40,20 @@ namespace HuesarioApp.ViewModels.Sales
             }
         }
 
+        /*
+         * ACTIONS, COMMANDS AND TASKS
+         */
         public ICommand TakePictureCommand { get; }
-
-        public SalesViewModel(ICameraServices cameraServices)
+        
+        // CONTINUAR AQUI 
+        private Task LoadData()
         {
-            _images = [];
-            TakePictureCommand = new TakePictureCommand(cameraServices, (photo) =>
-                {
-                    if (photo != null) Images.Add(photo);
-                }
-            );
+            return null;
         }
 
-        // INotifyPropertyChanged Logic
+        /*
+         * INOTIFY PROPERTY CHANGED
+         */
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string? property = null)

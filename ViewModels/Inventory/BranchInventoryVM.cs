@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.Entities;
+using HuesarioApp.Services.Messages;
 
 namespace HuesarioApp.ViewModels.Inventory;
 
@@ -77,8 +79,11 @@ public class BranchInventoryVm : INotifyPropertyChanged
         {
             Name = Brand.Name
         };
-        await _repo.Create(newBrand);
+
+        if (!(await _repo.Create(newBrand) > 0))
+            return;
         BrandList.Add(newBrand);
+        _ = WeakReferenceMessenger.Default.Send(new ChangeInBrandMessage(BrandList));
         Brand = new();
     }
 

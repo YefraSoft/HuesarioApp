@@ -2,9 +2,11 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.Entities;
 using HuesarioApp.Models.Enums;
+using HuesarioApp.Services.Messages;
 
 namespace HuesarioApp.ViewModels.Inventory;
 
@@ -13,6 +15,9 @@ public sealed class ModelsInventoryVm : INotifyPropertyChanged
     public ModelsInventoryVm(IRepository<VehicleModels, int> modelsRepo, IRepository<Brands, int> brandRepo,
         IEntityValidator<VehicleModels> validator)
     {
+        WeakReferenceMessenger.Default.Register<ChangeInBrandMessage>(this,
+            (_, message) => { BrandList = message.Value; });
+
         _modelsRepo = modelsRepo;
         _brandRepo = brandRepo;
         _validator = validator;
@@ -129,11 +134,11 @@ public sealed class ModelsInventoryVm : INotifyPropertyChanged
         if (!_validator.IsValid(Model))
         {
             var message = $"Por favor verifica los siguientes campos:\n" +
-                             $"- Nombre: {Model.Name ?? "(vacío)"}\n" +
-                             $"- Año: {Model.Year}\n" +
-                             $"- Motor: {Model.Engine ?? "(vacío)"}\n" +
-                             $"- Marca ID: {Model.BrandId}\n" +
-                             $"- Transmisión: {Model.Transmission}";
+                          $"- Nombre: {Model.Name ?? "(vacío)"}\n" +
+                          $"- Año: {Model.Year}\n" +
+                          $"- Motor: {Model.Engine ?? "(vacío)"}\n" +
+                          $"- Marca ID: {Model.BrandId}\n" +
+                          $"- Transmisión: {Model.Transmission}";
 
             await Shell.Current.DisplayAlert("Error", message, "OK");
             return;
