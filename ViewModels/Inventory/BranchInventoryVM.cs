@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using HuesarioApp.Interfaces.AppServices;
 using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.Entities;
 using HuesarioApp.Services.Messages;
@@ -11,10 +12,11 @@ namespace HuesarioApp.ViewModels.Inventory;
 
 public class BranchInventoryVm : INotifyPropertyChanged
 {
-    public BranchInventoryVm(IRepository<Brands, int> repo, IEntityValidator<Brands> validator)
+    public BranchInventoryVm(IRepository<Brands, int> repo, IEntityValidator<Brands> validator, ILoggerService logger)
     {
         _repo = repo;
         _validator = validator;
+        var logger1 = logger;
         _ = LoadData();
         SaveCommand = new Command(async void () =>
         {
@@ -24,9 +26,10 @@ public class BranchInventoryVm : INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                logger1.LogError("Error saving brand", ex);
             }
         });
+        
     }
 
     /*
@@ -34,7 +37,7 @@ public class BranchInventoryVm : INotifyPropertyChanged
      */
 
     private readonly IRepository<Brands, int> _repo;
-    private IEntityValidator<Brands> _validator;
+    private readonly IEntityValidator<Brands> _validator;
 
     /*
      * DATA BINDING

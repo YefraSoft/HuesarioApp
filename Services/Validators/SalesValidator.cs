@@ -4,9 +4,9 @@ using HuesarioApp.Models.Enums;
 
 namespace HuesarioApp.Services.Validators;
 
-public class SalesValidator(IValidator validator) : IEntityValidator<Sales>
+public class SalesValidator(IValidator validator) : IEntityValidator<SalesEntity>
 {
-    public bool IsValid(Sales entity)
+    public bool IsValid(SalesEntity entity)
     {
         return
             validator.IsValidNumber(entity.PartId) &&

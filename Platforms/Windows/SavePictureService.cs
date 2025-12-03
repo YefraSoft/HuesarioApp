@@ -2,7 +2,7 @@
 
 public class SavePictureService
 {
-    public static bool SavePicture(byte[] arr, string imageName = "")
+    public static string? SavePicture(byte[] arr, string imageName = "")
     {
         try
         {
@@ -15,12 +15,11 @@ public class SavePictureService
             var fullPath = Path.Combine(appFolderPath, imageName);
             File.WriteAllBytes(fullPath, arr);
 
-            return true;
+            return fullPath;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error saving image in Windows: {ex.Message}");
-            return false;
+            throw ex;
         }
     }
 }

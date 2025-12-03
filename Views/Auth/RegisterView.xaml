@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HuesarioApp.ViewModels.Auth"
+             x:DataType="vm:RegisterViewModel"
+             x:Class="HuesarioApp.Views.Auth.RegisterView">
+    <ScrollView VerticalOptions="Center" HorizontalOptions="Center">
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Selecciona tu Avatar"
+                   FontSize="Small"
+                   HorizontalOptions="Center" />
+            <CollectionView ItemsSource="{Binding AvatarsList}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedAvatar, Mode=TwoWay}"
+                            FlowDirection="LeftToRight"
+                            ItemsLayout="HorizontalList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Null}">
+                        <Grid Padding="5" VerticalOptions="Center" HorizontalOptions="Center">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="Transparent" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="DarkOrange" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <VerticalStackLayout>
+                                <Border Stroke="Orange"
+                                        StrokeShape="Ellipse"
+                                        BackgroundColor="Orange"
+                                        Margin="5"
+                                        Padding="5"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
+                                    <Image Source="{Binding .}"
+                                           Aspect="Center" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Nombre:" />
+            <Entry Text="{Binding Registerbody.name}" />
+
+            <Label Text="Usuario:" />
+            <Entry Text="{Binding Registerbody.username}" />
+
+            <Label Text="Contraseña:" />
+            <Entry Text="{Binding Registerbody.password}" IsPassword="True" />
+
+            <Label Text="Rol:" />
+
+            <Picker ItemsSource="{Binding RolesList}"
+                    SelectedItem="{Binding SeletedRole}"
+                    ItemDisplayBinding="{Binding Value}" />
+
+            <Button Text="register" BackgroundColor="Orange" TextColor="White"
+                    Command="{Binding RegisterCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

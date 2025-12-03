@@ -8,7 +8,7 @@ namespace HuesarioApp;
 
 public static class SavePictureService
 {
-    public static bool SavePicture(byte[] arr, string imageName)
+    public static string? SavePicture(byte[] arr, string imageName)
     {
         if (Build.VERSION.SdkInt >= BuildVersionCodes.Q)
         {
@@ -28,34 +28,35 @@ public static class SavePictureService
                         output?.Write(arr, 0, arr.Length);
                         output?.Flush();
                         output?.Close();
+                        return uri.ToString();
                     }
                 }
             }
             catch (System.Exception ex)
             {
                 Console.Write(ex.ToString());
-                return false;
+                return null;
             }
 
             contentValues.Put(IsPending, 1);
         }
         else
         {
-            var picturesDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures)?.AbsolutePath;
-            if (picturesDir != null)
-            {
-                var targetDir = System.IO.Path.Combine(picturesDir, "Sales");
-                if (!Directory.Exists(targetDir))
-                    Directory.CreateDirectory(targetDir);
+            var picturesDir = Android.OS.Environment
+                .GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures)?.AbsolutePath;
+            if (picturesDir == null) return null;
+            var targetDir = System.IO.Path.Combine(picturesDir, "Sales");
+            if (!Directory.Exists(targetDir))
+                Directory.CreateDirectory(targetDir);
 
-                var filePath = System.IO.Path.Combine(targetDir, imageName);
-                System.IO.File.WriteAllBytes(filePath, arr);
-                var mediaScanIntent = new Android.Content.Intent(ActionMediaScannerScanFile);
-                mediaScanIntent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(filePath)));
-                MainActivity.Instance?.SendBroadcast(mediaScanIntent);
-            }
+            var filePath = System.IO.Path.Combine(targetDir, imageName);
+            System.IO.File.WriteAllBytes(filePath, arr);
+            var mediaScanIntent = new Android.Content.Intent(ActionMediaScannerScanFile);
+            mediaScanIntent.SetData(Android.Net.Uri.FromFile(new Java.IO.File(filePath)));
+            MainActivity.Instance?.SendBroadcast(mediaScanIntent);
+            return filePath;
         }
 
-        return true;
+        return null;
     }
 }

@@ -13,6 +13,7 @@ public class LocalDbConfig
         await _connection.CreateTableAsync<Brands>();
         await _connection.CreateTableAsync<VehicleModels>();
         await _connection.CreateTableAsync<Parts>();
-        await _connection.CreateTableAsync<Sales>();
+        await _connection.CreateTableAsync<SalesEntity>();
+        await _connection.CreateTableAsync<Sessions>();
     }
 }

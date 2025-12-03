@@ -4,6 +4,13 @@ namespace HuesarioApp.Services.AppServices;
 
 public class CameraService : ICameraServices
 {
+    private readonly ILoggerService _logger;
+
+    public CameraService(ILoggerService loggerService)
+    {
+        _logger = loggerService;
+    }
+
     public async Task<Stream> TakePhoto()
     {
         try
@@ -14,35 +21,40 @@ public class CameraService : ICameraServices
             if (status != PermissionStatus.Granted)
                 await Permissions.RequestAsync<Permissions.Camera>();
             var photo = await MediaPicker.Default.CapturePhotoAsync();
-            if (photo == null)
-                throw new Exception("No photo available");
-            return await photo.OpenReadAsync();
+            if (photo is not null) return await photo.OpenReadAsync();
+            _logger.LogInfo("Device: " + DeviceInfo.Current);
+            throw new Exception("No photo available");
         }
         catch (Exception e)
         {
-            await Shell.Current.DisplayAlert("Error", e.Message, "OK");
+            _logger.LogError("Error in take photo process", e);
             throw;
         }
     }
 
-    public async Task<bool> SavePhoto(byte[] photoBytes)
+    public Task<string?> SavePhoto(byte[] photoBytes)
     {
         try
         {
 #if ANDROID
-    return SavePictureService.SavePicture(photoBytes, $"SaleDay_{DateTime.Now:yyyyMMdd_HHmm}.png");
+            var fileName = $"SaleDay_{DateTime.Now:yyyyMMdd_HHmmss_fff}_{Guid.NewGuid().ToString()[..8]}.png";
+            var path = SavePictureService.SavePicture(photoBytes, fileName);
+            return Task.FromResult(path);
 #elif IOS
-            return SavePictureService.SavePicture(photoBytes);
+            var path = SavePictureService.SavePicture(photoBytes);
+            return Task.FromResult(path);
 #elif WINDOWS
-            return SavePictureService.SavePicture(photoBytes,$"SaleDay_{DateTime.Now:yyyyMMdd_HHmm}.png");
+            var fileName = $"SaleDay_{DateTime.Now:yyyyMMdd_HHmmss_fff}_{Guid.NewGuid().ToString()[..8]}.png";
+            var path = SavePictureService.SavePicture(photoBytes, fileName);
+            return Task.FromResult(path);
 #else
-            return false;
+            return Task.FromResult<string?>(null);
 #endif
         }
         catch (Exception e)
         {
-            await Shell.Current.DisplayAlert("Error", e.Message, "OK");
-            throw;
+            _logger.LogError("Error saving photo", e);
+            return Task.FromResult<string?>(null);
         }
     }
 

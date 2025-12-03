@@ -4,37 +4,67 @@
     x:Class="HuesarioApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:auth="clr-namespace:HuesarioApp.Views.Auth"
     xmlns:sales="clr-namespace:HuesarioApp.Views.Sales"
     xmlns:branch="clr-namespace:HuesarioApp.Views.Inventory.BranchView"
     xmlns:parts="clr-namespace:HuesarioApp.Views.Inventory.Parts"
     xmlns:models="clr-namespace:HuesarioApp.Views.Inventory.ModelsView"
+    xmlns:seller="clr-namespace:HuesarioApp.Views.Seller"
     FlyoutBehavior="Flyout"
-    Title="HuesarioApp">
+    Title="Multiplartes Garcia's POS">
+    
+    <FlyoutItem  Shell.FlyoutBehavior="Disabled" FlyoutItemIsVisible="False">
+        <Tab Title="Login">
+            <ShellContent Title="Welcome to Multiplartes Garcia's POS"
+                          ContentTemplate="{DataTemplate auth:LoginView}" 
+                          Route="Login"/>
+        </Tab>
+        <Tab Title="Register">
+            <ShellContent Title="Welcome to Multiplartes Garcia's POS"
+                          ContentTemplate="{DataTemplate auth:RegisterView}" 
+                          Route="Register"/>
+        </Tab>
+    </FlyoutItem>
+    
+    <ShellContent Title="Vendedor"
+                  ContentTemplate="{DataTemplate seller:SellerView}"
+                  Route="SellerWindow"
+        />
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate sales:SalesView}"
-        Route="MainPage" />
-
-    <FlyoutItem Title="Inventory" Icon="inventory_ico.png">
-        <Tab Title="Models" Icon="models_icon.png">
+    <FlyoutItem Title="Vendedor" Icon="inv_ico.png">
+        <Tab Title="Modelos" Icon="car_ico.png">
             <ShellContent
-                Title="Models"
+                Title="Modelos"
                 ContentTemplate="{DataTemplate models:ModelsInventoryView}"
                 Route="ModelsInventory" />
         </Tab>
-        <Tab Title="Branches" Icon="vw_icon.png">
+        <Tab Title="Marcas" Icon="bra_ico.png">
             <ShellContent
-                Title="Branches"
+                Title="Marcas"
                 ContentTemplate="{DataTemplate branch:BranchInventoryView}"
                 Route="ModelsInventory" />
         </Tab>
-        <Tab Title="Parts" Icon="inventory_ico.png">
+        <Tab Title="Partes" Icon="par_ico.png">
             <ShellContent
-                Title="Parts"
+                Title="Partes"
                 ContentTemplate="{DataTemplate parts:PartsInventoryView}"
                 Route="PartsInventory" />
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="Ventas" Icon="sal_pag_ico.png">
+        <Tab Title="Registro" Icon="sal_ico.png">
+            <ShellContent
+                Title="Ventas"
+                ContentTemplate="{DataTemplate sales:SalesView}"
+                Route="Sales" />
+        </Tab>
+        <Tab Title="Historico" Icon="sal_rep_ico.png">
+            <ShellContent
+                Title="Reportes"
+                ContentTemplate="{DataTemplate sales:SalesRecordView}"
+                Route="SalesRecord" />
+        </Tab>
+    </FlyoutItem>
+
 
 </Shell>

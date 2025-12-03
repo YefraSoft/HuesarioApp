@@ -29,6 +29,6 @@ public class LocalRepository<T, TY> : IRepository<T, TY> where T : class, new()
 
     public async Task<int> Delete(TY id)
     {
-        return await _db.DeleteAsync(id);
+        return await _db.DeleteAsync<T>(id);
     }
 }

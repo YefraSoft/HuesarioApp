@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HuesarioApp.ViewModels.Seller"
+             x:DataType="vm:SellerViewModel"
+             x:Class="HuesarioApp.Views.Seller.SellerView">
+    <ScrollView Padding="10,10,10,0">
+        <FlexLayout Direction="Column"
+                    AlignContent="Center"
+                    MaximumWidthRequest="900"
+                    JustifyContent="Start">
+
+            <Label Text="Datos del Ticket"
+                   FontAttributes="Bold"
+                   FontSize="20"
+                   Margin="0,0,0,10" />
+
+            <Label Text="ID del vendedor" />
+            <Entry Placeholder="1"
+                   Keyboard="Numeric"
+                   Text="{Binding TicketBody.sellerId}" />
+
+            <Label Text="Método de pago" Margin="0,10,0,0" />
+            <Picker
+                ItemsSource="{Binding PaymentMethodsList}"
+                SelectedItem="{Binding SelectedPaymentMethod}" />
+
+            <Label Text="Total" Margin="0,10,0,0" />
+            <Entry Placeholder="0.00"
+                   Keyboard="Numeric"
+                   Text="{Binding TicketBody.total}" />
+
+            <Label Text="Piezas del Ticket"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   Margin="0,20,0,10" />
+
+            <VerticalStackLayout>
+                <Border Stroke="DarkGray"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="10"
+                        Margin="0,0,0,10">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="ID pieza (opcional)" />
+                        <Entry Keyboard="Numeric"
+                               Text="{Binding SelectedSale.partId}" />
+                        <Label Text="Nombre de la pieza" />
+                        <Entry Placeholder="Ej: Defensa delantera"
+                               Text="{Binding SelectedSale.partName}" />
+                        <Label Text="Precio" />
+                        <Entry Keyboard="Numeric"
+                               Text="{Binding SelectedSale.price}" />
+                        <Label Text="Cantidad" />
+                        <Entry Keyboard="Numeric"
+                               Text="{Binding SelectedSale.quantity}" />
+                        <HorizontalStackLayout Spacing="10">
+                            <Label Text="Tiene garantía?"
+                                   VerticalOptions="Center" />
+                            <Switch IsToggled="{Binding SelectedSale.hasWarranty}"
+                                    VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <DatePicker
+                            IsVisible="{Binding SelectedSale.hasWarranty}"
+                            Date="{Binding SelectedSale.warrantyExpirationDate}" />
+
+                        <Button Text="Eliminar"
+                                Background="DarkRed"
+                                TextColor="White"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveItemCommand}"
+                                CommandParameter="{Binding .}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+
+            <CollectionView ItemsSource="{Binding SaleItems}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="DarkGray"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 10"
+                                Padding="10"
+                                Margin="0,0,0,10">
+
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="ID pieza (opcional)" />
+                                <Entry Keyboard="Numeric"
+                                       Text="{Binding partId}" />
+                                <Label Text="Nombre de la pieza" />
+                                <Entry Placeholder="Ej: Defensa delantera"
+                                       Text="{Binding partName}" />
+                                <Label Text="Precio" />
+                                <Entry Keyboard="Numeric"
+                                       Text="{Binding price}" />
+                                <Label Text="Cantidad" />
+                                <Entry Keyboard="Numeric"
+                                       Text="{Binding quantity}" />
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="Tiene garantía?"
+                                           VerticalOptions="Center" />
+                                    <Switch IsToggled="{Binding hasWarranty}"
+                                            VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                                <DatePicker
+                                    IsVisible="{Binding hasWarranty}"
+                                    Date="{Binding warrantyExpirationDate}" />
+
+                                <Button Text="Eliminar"
+                                        Background="DarkRed"
+                                        TextColor="White"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveItemCommand}"
+                                        CommandParameter="{Binding .}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Agregar pieza"
+                    Command="{Binding AddItemCommand}" />
+
+            <Button Text="Enviar Ticket"
+                    Command="{Binding CreateTicketCommand}" />
+
+        </FlexLayout>
+    </ScrollView>
+</ContentPage>

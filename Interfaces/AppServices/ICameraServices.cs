@@ -3,6 +3,6 @@
 public interface ICameraServices
 {
     public Task<Stream> TakePhoto();
-    public Task<bool> SavePhoto(byte[] imageStream);
+    public Task<string?> SavePhoto(byte[] imageStream);
     public Task<ImageSource?> TakeAndSavePhoto();
 }

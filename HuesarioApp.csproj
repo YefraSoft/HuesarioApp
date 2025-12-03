@@ -76,11 +76,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\Contracts\" />
-	  <Folder Include="Services\DataServices\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="Views\Sales\SalesView.xaml">
 	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>

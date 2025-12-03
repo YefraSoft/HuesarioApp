@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using HuesarioApp.Interfaces.AppServices;
 using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.Entities;
 using HuesarioApp.Models.Enums;
@@ -13,11 +14,11 @@ namespace HuesarioApp.ViewModels.Inventory;
 public sealed class ModelsInventoryVm : INotifyPropertyChanged
 {
     public ModelsInventoryVm(IRepository<VehicleModels, int> modelsRepo, IRepository<Brands, int> brandRepo,
-        IEntityValidator<VehicleModels> validator)
+        IEntityValidator<VehicleModels> validator, ILoggerService logger)
     {
         WeakReferenceMessenger.Default.Register<ChangeInBrandMessage>(this,
             (_, message) => { BrandList = message.Value; });
-
+        _logger = logger;
         _modelsRepo = modelsRepo;
         _brandRepo = brandRepo;
         _validator = validator;
@@ -30,7 +31,7 @@ public sealed class ModelsInventoryVm : INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex);
+                _logger.LogError("Error saving vehicle model", ex);
             }
         });
     }
@@ -42,6 +43,7 @@ public sealed class ModelsInventoryVm : INotifyPropertyChanged
     private readonly IRepository<VehicleModels, int> _modelsRepo;
     private readonly IRepository<Brands, int> _brandRepo;
     private readonly IEntityValidator<VehicleModels> _validator;
+    private readonly ILoggerService _logger;
 
     /*
      * DATA BINDING

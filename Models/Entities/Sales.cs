@@ -3,10 +3,10 @@
 namespace HuesarioApp.Models.Entities;
 
 [Table("sales")]
-public class Sales
+public class SalesEntity
 {
 
-    public Sales()
+    public SalesEntity()
     {
         CreatedAt = DateTime.Now;
     }

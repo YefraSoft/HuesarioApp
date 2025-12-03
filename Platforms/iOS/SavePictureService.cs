@@ -5,15 +5,15 @@ namespace HuesarioApp;
 
 public class SavePictureService
 {
-    public static bool SavePicture(byte[] arr)
+    public static string? SavePicture(byte[] arr)
     {
         var imageData = NSData.FromArray(arr);
         var image = UIImage.LoadFromData(imageData);
-        var success = true;
+        string? success = null;
         image?.SaveToPhotosAlbum((img, error) =>
         {
             Console.WriteLine($"Error saving image: {error.LocalizedDescription}");
-            success = false;
+            success = null;
         });
         return success;
     }
