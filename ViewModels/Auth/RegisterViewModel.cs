@@ -32,6 +32,7 @@ public partial class RegisterViewModel : ObservableObject
         _registerbody = new RegisterBody();
         _validator = validator;
         _repo = repo;
+        _selectedAvatar = string.Empty;
         RolesList = new ObservableCollection<KeyValuePair<int, string>>(
             Enum.GetValues<Roles>()
                 .Select(r => new KeyValuePair<int, string>((int)r, r.ToString()))
