@@ -29,7 +29,7 @@ namespace HuesarioApp
                     fonts.AddFont("AwesomeRegular.otf", "Awesome");
                 });
 
-            Task.Run(async () => await new LocalDbConfig().MakeTables()).Wait();
+            Task.Run(async () => await new LocalDbConfig().MakeTables());
             // ViewModels
             builder.Services.AddTransient<SalesViewModel>();
             builder.Services.AddTransient<ModelsInventoryVm>();
