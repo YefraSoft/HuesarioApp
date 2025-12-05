@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:HuesarioApp.ViewModels.Auth"
              xmlns:models="clr-namespace:HuesarioApp.Models.Entities"
+             xmlns:controls="clr-namespace:HuesarioApp.Resources.Controls"
              x:DataType="vm:LoginViewModel"
              x:Class="HuesarioApp.Views.Auth.LoginView">
     <VerticalStackLayout Padding="30" Spacing="20" HorizontalOptions="Center" VerticalOptions="Center">
@@ -52,52 +53,9 @@
         <Entry Text="{Binding Password}" Placeholder="Ingrese contraseña" IsPassword="True" FontSize="Small"
                HorizontalOptions="FillAndExpand" />
 
-        <Grid HorizontalOptions="FillAndExpand">
-            <Button Text="Iniciar Sesión"
-                    TextColor="White"
-                    FontSize="Small"
-                    BackgroundColor="Orange"
-                    Command="{Binding LoggingCommand}"
-                    HorizontalOptions="FillAndExpand">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal"/>
-                            <VisualState x:Name="Pressed">
-                                <VisualState.Setters>
-                                    <Setter Property="Scale" Value="0.95" />
-                                    <Setter Property="Opacity" Value="0.8" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="Scale" Value="1.05" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </VisualStateManager.VisualStateGroups>
-            </Button>
-            <Border BackgroundColor="Orange"
-                    StrokeThickness="0"
-                    Padding="10"
-                    IsVisible="{Binding IsBusy}"
-                    HorizontalOptions="FillAndExpand">
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="8" />
-                </Border.StrokeShape>
-
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
-                    <ActivityIndicator IsRunning="True"
-                                       Color="White"
-                                       HeightRequest="20"
-                                       WidthRequest="20" />
-                    <Label Text="Iniciando sesión..."
-                           TextColor="White"
-                           VerticalOptions="Center"
-                           FontSize="Small" />
-                </HorizontalStackLayout>
-            </Border>
-        </Grid>
+        <controls:ButtonLoader ButtonText="Iniciar Sesión"
+                               LoaderText="Iniciando sesión..."
+                               IsBusy="{Binding IsBusy}"
+                               Command="{Binding LoggingCommand}" />
     </VerticalStackLayout>
 </ContentPage>
