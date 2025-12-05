@@ -10,8 +10,12 @@ using HuesarioApp.Services.DataServices;
 using HuesarioApp.Services.Validators;
 using HuesarioApp.ViewModels.Inventory;
 using HuesarioApp.ViewModels.Auth;
+using HuesarioApp.ViewModels.Dashboard;
 using HuesarioApp.ViewModels.Sales;
 using HuesarioApp.ViewModels.Seller;
+using HuesarioApp.Views.Sales;
+using LiveChartsCore.SkiaSharpView.Maui;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace HuesarioApp
 {
@@ -22,6 +26,8 @@ namespace HuesarioApp
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSkiaSharp()
+                .UseLiveCharts()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -37,13 +43,15 @@ namespace HuesarioApp
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<RegisterViewModel>();
             builder.Services.AddTransient<SellerViewModel>();
+            builder.Services.AddTransient<ViewModel>();
+            builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<IRepository<VehicleModels, int>, LocalRepository<VehicleModels, int>>();
             builder.Services.AddTransient<IRepository<Brands, int>, LocalRepository<Brands, int>>();
             builder.Services.AddTransient<IRepository<Sessions, int>, LocalRepository<Sessions, int>>();
 
             builder.Services.AddSingleton(new HttpClient
             {
-                BaseAddress = new Uri("https://api.yefrasoft.com"),
+                BaseAddress = new Uri("http://localhost:8080"),
                 DefaultRequestHeaders = { Accept = { new MediaTypeWithQualityHeaderValue("application/json") } }
             });
             builder.Services.AddSingleton<ICameraServices, CameraService>();
