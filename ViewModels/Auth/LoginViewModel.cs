@@ -83,16 +83,17 @@ public partial class LoginViewModel : ObservableObject
             username = this.Username,
             password = this.Password
         };
-        if (!_validator.IsValid(body))
-        {
-            await Shell.Current.DisplayAlert("Información",
-                "Por favor ingrese usuario y contraseña válidos",
-                "Ok");
-            return;
-        }
 
         try
         {
+            if (!_validator.IsValid(body))
+            {
+                await Shell.Current.DisplayAlert("Información",
+                    "Por favor ingrese usuario y contraseña válidos",
+                    "Ok");
+                return;
+            }
+
             var json = JsonSerializer.Serialize(body);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("/api/auth/login", content);

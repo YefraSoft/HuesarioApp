@@ -25,11 +25,6 @@
                           Route="Register"/>
         </Tab>
     </FlyoutItem>
-    
-    <ShellContent Title="Vendedor"
-                  ContentTemplate="{DataTemplate seller:SellerView}"
-                  Route="SellerWindow"
-        />
 
     <FlyoutItem Title="Vendedor" Icon="inv_ico.png">
         <Tab Title="Modelos" Icon="car_ico.png">
