@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HuesarioApp.Resources.Controls"
+             xmlns:converters="clr-namespace:HuesarioApp.Resources.Controls.Converters"
+             x:Class="HuesarioApp.Resources.Controls.ButtonLoader">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="BoolConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Border BackgroundColor="Orange">
+        <Border.Shadow>
+            <Shadow
+                Brush="Black"
+                Offset="5,5"
+                Radius="15"
+                Opacity="0.4" />
+        </Border.Shadow>
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="10"></RoundRectangle>
+        </Border.StrokeShape>
+
+        <Grid HorizontalOptions="FillAndExpand">
+            <Button
+                VerticalOptions="Center"
+                Text="{Binding ButtonText, Source={RelativeSource AncestorType={x:Type local:ButtonLoader}}}"
+                BackgroundColor="Orange"
+                TextColor="White"
+                HeightRequest="30"
+                FontSize="16"
+                HorizontalOptions="FillAndExpand"
+                CornerRadius="10"
+                Command="{Binding Command, Source={RelativeSource AncestorType={x:Type local:ButtonLoader}}}"
+                IsVisible="{Binding IsBusy, Source={RelativeSource AncestorType={x:Type local:ButtonLoader}}, Converter={StaticResource BoolConverter}}">
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="0.95" />
+                                    <Setter Property="Opacity" Value="0.85" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="Scale" Value="1.03" />
+                                    <Setter Property="Opacity" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+            </Button>
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                HeightRequest="30"
+                Spacing="10"
+                IsVisible="{Binding IsBusy, Source={RelativeSource AncestorType={x:Type local:ButtonLoader}}}">
+                <ActivityIndicator
+                    IsRunning="True"
+                    Color="White"
+                    WidthRequest="20"
+                    HeightRequest="20" />
+                <Label
+                    Text="{Binding LoaderText, Source={RelativeSource AncestorType={x:Type local:ButtonLoader}}}"
+                    TextColor="White"
+                    VerticalOptions="Center"
+                    FontSize="16" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>
