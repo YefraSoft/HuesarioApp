@@ -10,55 +10,50 @@
     xmlns:parts="clr-namespace:HuesarioApp.Views.Inventory.Parts"
     xmlns:models="clr-namespace:HuesarioApp.Views.Inventory.ModelsView"
     xmlns:seller="clr-namespace:HuesarioApp.Views.Seller"
+    xmlns:admin="clr-namespace:HuesarioApp.Views.Dashboard"
     FlyoutBehavior="Flyout"
     Title="Multiplartes Garcia's POS">
-    
-    <FlyoutItem  Shell.FlyoutBehavior="Disabled" FlyoutItemIsVisible="False">
-        <Tab Title="Login">
-            <ShellContent Title="Welcome to Multiplartes Garcia's POS"
-                          ContentTemplate="{DataTemplate auth:LoginView}" 
-                          Route="Login"/>
+
+    <Shell.FlyoutHeader>
+        <StackLayout Padding="20" BackgroundColor="Orange">
+            <Label Text="Multiplartes Garcia's POS"
+                   FontSize="24"
+                   TextColor="White"
+                   HorizontalOptions="Center" />
+        </StackLayout>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutFooter>
+        <StackLayout Padding="10" BackgroundColor="LightGray">
+            <Label Text="© 2024 Multiplartes Garcia's"
+                   FontSize="12"
+                   TextColor="Black"
+                   HorizontalOptions="Center" />
+        </StackLayout>
+    </Shell.FlyoutFooter>
+    <FlyoutItem Shell.FlyoutBehavior="Disabled" FlyoutItemIsVisible="False">
+        <Tab Title="Inicio">
+            <ShellContent
+                ContentTemplate="{DataTemplate auth:LoginView}"
+                Route="Login" />
+
         </Tab>
-        <Tab Title="Register">
-            <ShellContent Title="Welcome to Multiplartes Garcia's POS"
-                          ContentTemplate="{DataTemplate auth:RegisterView}" 
-                          Route="Register"/>
+        <Tab Title="Registro">
+            <ShellContent
+                ContentTemplate="{DataTemplate auth:RegisterView}"
+                Route="Register" />
         </Tab>
     </FlyoutItem>
 
-    <FlyoutItem Title="Vendedor" Icon="inv_ico.png">
-        <Tab Title="Modelos" Icon="car_ico.png">
-            <ShellContent
-                Title="Modelos"
-                ContentTemplate="{DataTemplate models:ModelsInventoryView}"
-                Route="ModelsInventory" />
-        </Tab>
-        <Tab Title="Marcas" Icon="bra_ico.png">
-            <ShellContent
-                Title="Marcas"
-                ContentTemplate="{DataTemplate branch:BranchInventoryView}"
-                Route="ModelsInventory" />
-        </Tab>
-        <Tab Title="Partes" Icon="par_ico.png">
-            <ShellContent
-                Title="Partes"
-                ContentTemplate="{DataTemplate parts:PartsInventoryView}"
-                Route="PartsInventory" />
-        </Tab>
+    <FlyoutItem Route="AdminPanel" Title="Hola jefe!">
+        <ShellContent ContentTemplate="{DataTemplate admin:DashboardView}" />
     </FlyoutItem>
-    <FlyoutItem Title="Ventas" Icon="sal_pag_ico.png">
-        <Tab Title="Registro" Icon="sal_ico.png">
-            <ShellContent
-                Title="Ventas"
-                ContentTemplate="{DataTemplate sales:SalesView}"
-                Route="Sales" />
-        </Tab>
-        <Tab Title="Historico" Icon="sal_rep_ico.png">
-            <ShellContent
-                Title="Reportes"
-                ContentTemplate="{DataTemplate sales:SalesRecordView}"
-                Route="SalesRecord" />
-        </Tab>
+
+    <FlyoutItem Route="SellerPanel" Title="Ventas del dia 222" Icon="inv_ico.png">
+
+    </FlyoutItem>
+
+    <FlyoutItem Route="InventoryManagerPanel" Title="Inventario" Icon="sal_pag_ico.png">
     </FlyoutItem>
 
 
