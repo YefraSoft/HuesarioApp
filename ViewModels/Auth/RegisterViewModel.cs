@@ -18,11 +18,18 @@ namespace HuesarioApp.ViewModels.Auth;
 
 public partial class RegisterViewModel : ObservableObject
 {
-    [ObservableProperty] private RegisterBody _registerbody;
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(RegisterCommand))]
+    private RegisterBody _registerbody;
+
     [ObservableProperty] private KeyValuePair<int, string> _seletedRole;
     [ObservableProperty] private ObservableCollection<KeyValuePair<int, string>> _rolesList;
     [ObservableProperty] private ObservableCollection<string> _avatarsList;
-    [ObservableProperty] private string _selectedAvatar;
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(RegisterCommand))]
+    private string _selectedAvatar;
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(RegisterCommand))]
+    private bool _isBusy;
 
     public RegisterViewModel(HttpClient client, ILoggerService loggerService,
         IEntityValidator<RegisterBody> validator, IRepository<Sessions, int> repo)
@@ -34,7 +41,7 @@ public partial class RegisterViewModel : ObservableObject
         _repo = repo;
         _selectedAvatar = string.Empty;
         RolesList = new ObservableCollection<KeyValuePair<int, string>>(
-            Enum.GetValues<Roles>()
+            Enum.GetValues<RolId>()
                 .Select(r => new KeyValuePair<int, string>((int)r, r.ToString()))
         );
         _avatarsList = new ObservableCollection<string>
@@ -61,9 +68,10 @@ public partial class RegisterViewModel : ObservableObject
         Registerbody.roleId = newValue.Key;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanRegister))]
     private async Task Register()
     {
+        IsBusy = true;
         var register = new RegisterBody
         {
             name = Registerbody.name,
@@ -71,17 +79,9 @@ public partial class RegisterViewModel : ObservableObject
             password = Registerbody.password,
             roleId = Registerbody.roleId
         };
-        if (!_validator.IsValid(register) && string.IsNullOrEmpty(SelectedAvatar))
-        {
-            await Shell.Current.DisplayAlert("Error",
-                "Datos incorrectos",
-                "Ok");
-            return;
-        }
-
         try
         {
-            var objet = JsonSerializer.Serialize(register);
+            var objet = JsonSerializer.Serialize(Registerbody);
             var content = new StringContent(objet, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync("/api/auth/register", content);
             if (!response.IsSuccessStatusCode)
@@ -97,6 +97,7 @@ public partial class RegisterViewModel : ObservableObject
                     "Ok");
                 return;
             }
+
             var newSession = new Sessions
             {
                 Username = register.username,
@@ -112,6 +113,7 @@ public partial class RegisterViewModel : ObservableObject
                     "Ok");
                 return;
             }
+
             Registerbody = new();
             WeakReferenceMessenger.Default.Send(new sessionMessage(newSession));
             await Shell.Current.GoToAsync("//Login");
@@ -123,5 +125,17 @@ public partial class RegisterViewModel : ObservableObject
                 "Error de en de regsitro",
                 "Ok");
         }
+        finally
+        {
+            IsBusy = false;
+            RegisterCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    private bool CanRegister()
+    {
+        return _validator.IsValid(Registerbody) &&
+               !string.IsNullOrEmpty(SelectedAvatar) &&
+               !IsBusy;
     }
 }
