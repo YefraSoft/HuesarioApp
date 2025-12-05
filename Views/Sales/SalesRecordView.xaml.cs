@@ -1,15 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace HuesarioApp.Views.Sales;
 
 public partial class SalesRecordView : ContentPage
 {
-    public SalesRecordView()
+    private readonly ViewModel vm;
+    public SalesRecordView(ViewModel vm)
     {
         InitializeComponent();
+        BindingContext = vm;
+        this.vm = vm;
+    }
+    
+    protected override async void OnAppearing()
+    {
+        try
+        {
+            base.OnAppearing();
+            await vm.CargarTrendMensualAsync();
+        }
+        catch (Exception e)
+        {
+            throw; // TODO handle exception
+        }
     }
 }

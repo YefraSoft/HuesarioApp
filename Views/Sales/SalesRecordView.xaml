@@ -2,8 +2,14 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maui="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:lvcore="clr-namespace:LiveChartsCore;assembly=LiveChartsCore"
              x:Class="HuesarioApp.Views.Sales.SalesRecordView">
     <VerticalStackLayout>
-
+        <VerticalStackLayout Padding="10">
+            <maui:CartesianChart Series="{Binding Series}" HeightRequest="500"
+                                 EasingFunction="{Binding Source={x:Static lvcore:EasingFunctions.BounceOut}}"
+                                 XAxes="{Binding XAxes}" />
+        </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>
