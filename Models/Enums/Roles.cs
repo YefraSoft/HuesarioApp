@@ -1,8 +1,7 @@
 ﻿namespace HuesarioApp.Models.Enums;
 
-public enum Roles
+public enum RolId
 {
     SELLER = 3,
-    INVENTORY_MANAGER = 4,
-    ACCOUNTANT = 5
+    INVENTORY_MANAGER = 4
 }
