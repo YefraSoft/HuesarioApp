@@ -10,6 +10,7 @@ using HuesarioApp.Interfaces.DataServices;
 using HuesarioApp.Models.Contracts.Bodys.Auth;
 using HuesarioApp.Models.Contracts.Responses.Auth;
 using HuesarioApp.Models.Entities;
+using HuesarioApp.Models.Enums;
 using HuesarioApp.Services.Messages;
 using HuesarioApp.ViewModels.Auth.Commands;
 
@@ -107,8 +108,8 @@ public partial class LoginViewModel : ObservableObject
                 return;
             }
 
-            var tokenRol = JsonSerializer.Deserialize<LoginResponse>(await response.Content.ReadAsStringAsync());
-            if (tokenRol == null || string.IsNullOrWhiteSpace(tokenRol.token))
+            var tokenAndRol = JsonSerializer.Deserialize<LoginResponse>(await response.Content.ReadAsStringAsync());
+            if (tokenAndRol == null || string.IsNullOrWhiteSpace(tokenAndRol.token))
             {
                 _logger.LogWarning("Login response was invalid");
                 await Shell.Current.DisplayAlert("Información",
@@ -117,9 +118,29 @@ public partial class LoginViewModel : ObservableObject
                 return;
             }
 
-            await SecureStorage.SetAsync("token", tokenRol.token);
-            await SecureStorage.SetAsync("role", tokenRol.role);
-            await Shell.Current.GoToAsync("//SellerWindow");
+            await SecureStorage.SetAsync("token", tokenAndRol.token);
+            await SecureStorage.SetAsync("rol", tokenAndRol.role);
+
+            switch (tokenAndRol.role)
+            {
+                case nameof(RoleType.ADMIN):
+                    await Shell.Current.GoToAsync("//AdminPanel");
+                    break;
+
+                case nameof(RoleType.SELLER):
+                    await Shell.Current.GoToAsync("//SellerPanel");
+                    break;
+
+                case nameof(RoleType.INVENTORY_MANAGER):
+                    await Shell.Current.GoToAsync("//InventoryManagerPanel");
+                    break;
+                default:
+                    _logger.LogWarning($"Unknown role: {tokenAndRol.role}");
+                    await Shell.Current.DisplayAlert("Información",
+                        "Rol de usuario desconocido",
+                        "Ok");
+                    break;
+            }
         }
         catch (Exception e)
         {
