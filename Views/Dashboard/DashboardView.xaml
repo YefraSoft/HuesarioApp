@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:lvcore="clr-namespace:LiveChartsCore;assembly=LiveChartsCore"
+             xmlns:vm="clr-namespace:HuesarioApp.ViewModels.Dashboard"
+             xmlns:converters="clr-namespace:HuesarioApp.Resources.Controls.Converters"
+             x:DataType="vm:DashboardViewModel"
+             x:Class="HuesarioApp.Views.Dashboard.DashboardView">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:InverseBoolConverter x:Key="BoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Button
+                Text="Cargar/Refrescar Datos"
+                Command="{Binding LoadDataCommand}"
+                BackgroundColor="BlueViolet"
+                TextColor="White"
+                CornerRadius="8"
+                HeightRequest="50"
+                HorizontalOptions="Fill">
+                <Button.ImageSource>
+                    <FontImageSource
+                        Glyph="&#x21BB;"
+                        FontFamily="Arial"
+                        Color="White"
+                        Size="20" />
+                </Button.ImageSource>
+            </Button>
+
+            <ActivityIndicator
+                IsRunning="True"
+                IsVisible="{Binding Loading}"
+                Color="BlueViolet"
+                HeightRequest="50" />
+            <lvc:CartesianChart
+                Series="{Binding Series}"
+                XAxes="{Binding XAxes}"
+                Title="{Binding Title}"
+                HeightRequest="400"
+                EasingFunction="{Binding Source={x:Static lvcore:EasingFunctions.BounceOut}}"
+                IsVisible="{Binding Loading, Converter={StaticResource BoolConverter}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
